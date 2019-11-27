@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhg.javakc.modules.query.groups.dao.GroupsDao">
+
+    <select id="queryAllGroups" resultType="java.util.HashMap">
+        SELECT
+        GROUP_ID "id",
+        GROUP_NAME "name",
+        GROUP_PID "pId",
+        DECODE(GROUP_OPEN,0,'false',1,'true') "open",
+        GROUP_LEVEL "grouplevel"
+        FROM GROUPS WHERE 1=1 ORDER BY GROUP_WEIGHT ASC
+    </select>
+	
+	<insert id="insert">
+		INSERT INTO GROUPS(GROUP_ID,GROUP_NAME,GROUP_PID,GROUP_OPEN,GROUP_WEIGHT,GROUP_LEVEL)
+		VALUES(#{groupId},#{groupName},#{groupPid},#{groupOpen},#{groupWeight},#{groupLevel})
+	</insert>
+    
+    <select id="queryByGroupId" resultType="java.util.HashMap">
+        SELECT
+        GROUP_ID "id",
+        GROUP_NAME "name",
+        GROUP_PID "pId",
+        DECODE(GROUP_OPEN,0,'false',1,'true') "open",
+        GROUP_LEVEL "grouplevel"
+        FROM GROUPS WHERE 1=1 AND GROUP_PID=#{groupID} ORDER BY GROUP_WEIGHT ASC
+    </select>
+    
+    <delete id="deleteGroups">
+        DELETE FROM GROUPS WHERE GROUP_ID=#{GROUPID}
+    </delete>
+
+    <delete id="deleteGroups2" statementType="CALLABLE">
+        {call delete_groups(#{groupID},mode=IN,jdbcType=VARCHAR)}
+    </delete>
+
+    <select id="get" resultType="com.zhg.javakc.modules.query.groups.entity.GroupsEntity">
+        SELECT GROUP_ID AS groupId,GROUP_NAME AS groupName,GROUP_PID AS groupPid,GROUP_OPEN AS groupOpen,GROUP_LEVEL AS groupLevel,GROUP_WEIGHT AS groupWeight
+        FROM GROUPS WHERE GROUP_ID=#{groupId}
+    </select>
+
+    <update id="update">
+        UPDATE GROUPS SET GROUP_NAME=#{groupName},GROUP_PID=#{groupPid},
+        GROUP_OPEN=#{groupOpen},GROUP_LEVEL=#{groupLevel},GROUP_WEIGHT=#{groupWeight} WHERE GROUP_ID=#{groupId}
+    </update>
+</mapper>
