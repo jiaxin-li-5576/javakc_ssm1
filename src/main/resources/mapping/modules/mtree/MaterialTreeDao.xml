@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhg.javakc.modules.materialtree.dao.MaterialTreeDao">
+
+
+    <select id="queryAllcm" resultType="java.util.HashMap">
+        SELECT CLASS_MATERIAL_ID "id",
+        CLASS_MATERIAL_NAME "name",
+        CLASS_MATERIAL_LEVEL "cmlevel",
+        CLASS_MATERIAL_PID "pId",
+        DECODE(CLASS_MATERIAL_OPEN,0,'false',1,'true') "open"
+        FROM MDM_CLASS_MATERIAL_LEVEL WHERE 1=1 ORDER BY CLASS_MATERIAL_ORDER ASC
+    </select>
+
+    <insert id="insert">
+        INSERT INTO
+        MDM_CLASS_MATERIAL_LEVEL(CLASS_MATERIAL_ID,CLASS_MATERIAL_NAME,CLASS_MATERIAL_LEVEL,CLASS_MATERIAL_PID
+        ,CLASS_MATERIAL_OPEN,CLASS_MATERIAL_Order) VALUES
+        (#{cMaterialId},#{cMaterialName},#{cMaterialLevel},#{cMaterialPid},#{cMaterialOpen},#{cMaterialOrder})
+    </insert>
+
+</mapper>

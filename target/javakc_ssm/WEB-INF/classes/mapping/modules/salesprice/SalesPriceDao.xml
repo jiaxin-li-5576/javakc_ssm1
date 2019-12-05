@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhg.javakc.modules.salesprice.dao.SalesPriceDao">
+
+    <resultMap id="salesprice" type="salesprice">
+        <id property="spId" column="SP_ID" />
+        <result property="spPrice" column="SP_PRICE"/>
+        <result property="effectiveDate" column="EFFECTIVE_DATE"/>
+        <result property="expiryDate" column="EXPIRY_DATE"/>
+        <result property="version" column="VERSION"/>
+        <result property="changePriceDate" column="CHANGE_PRICE_DATE"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+
+    <resultMap id="salespriceClinet" type="salesprice">
+        <id property="spId" column="SP_ID" />
+        <result property="spPrice" column="SP_PRICE"/>
+        <result property="effectiveDate" column="EFFECTIVE_DATE"/>
+        <result property="expiryDate" column="EXPIRY_DATE"/>
+        <result property="version" column="VERSION"/>
+        <result property="changePriceDate" column="CHANGE_PRICE_DATE"/>
+        <result property="status" column="STATUS"/>
+        <collection property="clientList" column="CLIENT_ID" javaType="ArrayList" ofType="String">
+            <result column="CLIENT_ID" />
+        </collection>
+    </resultMap>
+
+    <select id="findList" resultMap="salesprice">
+        SELECT SP_ID,SP_PRICE,EFFECTIVE_DATE,EXPIRY_DATE,VERSION,CHANGE_PRICE_DATE,STATUS FROM MDM_SELLING_PRICE
+        <where>
+            <if test="status != null and status != ''">
+                AND STATUS LIKE '%'||#{status}||'%'
+                OR SP_ID LIKE '%'||#{status}||'%'
+                OR SP_PRICE LIKE '%'||#{status}||'%'
+            </if>
+        </where>
+
+    </select>
+
+
+    <insert id="insertRelation" parameterType="Map">
+        INSERT INTO DATA_ROLE_MENU(ROLE_ID, MENU_ID) VALUES(#{roleId}, #{menuId})
+    </insert>
+
+    <!--    select c.* from client c,mdm_selling_price s where c.client_id=s.client_id-->
+<!--    <select id="get" resultMap="salespriceClinet">-->
+<!--        SELECT C.CLIENT_ID FROM MDM_SELLING_PRICE S,CLIENT C-->
+<!--        WHERE C.CLIENT_ID= S.CLIENT_ID AND S.CLIENT_ID = #{id}-->
+<!--    </select>-->
+
+        <select id="get" resultMap="salesprice">
+            SELECT SP_ID,SP_PRICE,EFFECTIVE_DATE,EXPIRY_DATE,VERSION,CHANGE_PRICE_DATE,STATUS FROM MDM_SELLING_PRICE WHERE SP_ID =#{id}
+        </select>
+
+    <insert id="insert">
+        INSERT INTO MDM_SELLING_PRICE(SP_ID,SP_PRICE,EFFECTIVE_DATE,EXPIRY_DATE,VERSION,CHANGE_PRICE_DATE,STATUS)
+        VALUES(#{spId},#{spPrice},#{effectiveDate},#{expiryDate},#{version},#{changePriceDate},#{status})
+    </insert>
+
+
+
+    <update id="update">
+        UPDATE MDM_SELLING_PRICE SET SP_PRICE = #{spPrice} WHERE SP_ID = #{spId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM MDM_SELLING_PRICE WHERE SP_ID IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+<!--    GROUP_ID AS groupId,CLIENT_ID AS clientId,GOODS_ID AS goodsId,-->
+
+</mapper>
