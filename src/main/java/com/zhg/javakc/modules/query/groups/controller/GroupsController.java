@@ -1,16 +1,14 @@
 package com.zhg.javakc.modules.query.groups.controller;
 
 import com.zhg.javakc.base.util.CommonUtil;
-import com.zhg.javakc.modules.mdm.supplier.entity.SupplierEntity;
 import com.zhg.javakc.modules.query.groups.entity.GroupsEntity;
 import com.zhg.javakc.modules.query.groups.service.GroupsService;
-import com.zhg.javakc.modules.system.menu.entity.MenuEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+
 
 import java.util.List;
 import java.util.Map;
